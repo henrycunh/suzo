@@ -14,6 +14,7 @@ import ssl
 import re
 import os
 import sys
+from pathlib import Path
 import math
 from colorama import Fore, Back, Style, init
 
@@ -56,7 +57,7 @@ def getContext(url):
       printSh('\r\t  Loading (%3d%%)  ' % (percent * 100) + Fore.RED + bar + Fore.RESET + '   ')
       if '.in' in path: # Arquivo de entrada
         inputs.append(urllib.request.urlopen(url_abs + path, context = ctx).read()) # Insere o corpo do arquivo na lista
-      if '.out' in path: # Arquivo de entrada
+      if '.out' in path or '.res' in path: # Arquivo de entrada
         outputs.append(urllib.request.urlopen(url_abs + path, context = ctx).read())
     count += 1 # Adiciona ao contador de arquivos lidos
   print('\n\t──────────────────────────────────────')
@@ -88,18 +89,54 @@ print('\t├────────┴─────────────�
 print('\t│      ' + Fore.RED + 'made with love @ ufscar' + Fore.RESET + '   ⌡   │')
 print('\t└────────────────────────────────────┘')
 print()
+# (possivelmente problemática) Leitura de Dados
 print('\t──────────────────────────────────────')
 print('\t  número do lab                      ')
 print('\t  > ', end='', flush=1)
-problema = input()
-print('\t──────────────────────────────────────')
-url   = "https://susy.ic.unicamp.br:9999/mc102wy/%s/dados/testes.html" % (problema if len(problema) == 2 else '0' + problema) 
-inputs, outputs = getContext(url) # Recebe os inputs e outputs dado o url ajustado ao Lab
+try:
+  problema = int(input())
+  print('\t──────────────────────────────────────')
+except Exception as e:
+  print('\t──────────────────────────────────────')
+  while 1:
+    print('\t──────────────────────────────────────')
+    print('\t  número inválido, tente novamente   ')
+    print('\t  > ', end='', flush=1)
+    try:
+      problema = int(input())
+      print('\t──────────────────────────────────────')
+      break
+    except Exception as e:
+      pass
+
+# Define o URL do problema
+url   = "https://susy.ic.unicamp.br:9999/mc102wy/%02d/dados/testes.html" % problema 
+
+# Tenta acessar o problema
+try:
+  inputs, outputs = getContext(url) # Recebe os inputs e outputs dado o url ajustado ao Lab
+except Exception as e:
+  if e.args[0] == 'list index out of range': # Checa se existe o problema
+    while 1:
+      print('\t──────────────────────────────────────')
+      print('\t  lab inexistente, tente novamente   ')
+      print('\t  > ', end='', flush=1)
+      try:
+        problema = int(input())
+        url   = "https://susy.ic.unicamp.br:9999/mc102wy/%02d/dados/testes.html" % problema 
+        print('\t──────────────────────────────────────')
+        inputs, outputs = getContext(url) # Recebe os inputs e outputs dado o url ajustado ao Lab
+        break
+      except Exception as e:
+        pass
+  
 print('\n\t──────────────────────────────────────')
 print('\t  nome do arquivo                     ')
 print('\t  > ', end='', flush=1)
 file = input()
 print('\t──────────────────────────────────────')
+
+# Acumuladores
 cont = 1
 status = []
 _outputs = []
