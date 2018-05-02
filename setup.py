@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8v -*-
 
 #
 #     Arquivo de Instalacao
@@ -13,14 +13,18 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Pega a descricao completa a partir do arquivo README
-with open(path.join(here, 'README.md'), encoding='latin-1') as f:
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name              = 'SuZo',
-    version           = '1.0.2',
-    description       = 'Um comparador automático para labs do sistema SuSy',
-    long_description  = long_description,
+    name              =  'SuZo',
+    version           =  '1.0.4',
+    description       =  'Um comparador automático para labs do sistema SuSy',
+    long_description  =  long_description,
+    entry_points      =  '''
+        [console_scripts]
+        suzo=main:cli
+    ''',
     url               = 'https://github.com/muztake/suzo',
     author            = 'Henrique Cunha',
     author_email      = 'henrycunh@gmail.com',
