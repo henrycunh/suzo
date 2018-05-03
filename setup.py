@@ -1,4 +1,4 @@
-# -*- coding: utf-8v -*-
+# -*- coding: utf-8 -*-
 
 #
 #     Arquivo de Instalacao
@@ -18,25 +18,22 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name              =  'SuZo',
-    version           =  '1.0.4',
+    version           =  '1.0.7',
     description       =  'Um comparador automático para labs do sistema SuSy',
     long_description  =  long_description,
-    entry_points      =  '''
-        [console_scripts]
-        suzo=main:cli
-    ''',
+    py_modules        =  ['suzo', 'text', 'utils', 'scraping'],
+    entry_points      =  {
+        "console_scripts" : [
+            'suzo=suzo:cli'
+        ]
+    },
     url               = 'https://github.com/muztake/suzo',
     author            = 'Henrique Cunha',
     author_email      = 'henrycunh@gmail.com',
     keywords          = 'comparador parser susy unicamp',
     packages          = find_packages(),
     python_requires   = '>=3',
-    install_requires  = ['PyQuery', 'Colorama', 'click'],
-    project_urls      = {
-        "Twitter"   : "https://twitter.com/henrycunh",
-        "Facebook"  : "https://fb.me/henrycunh"
-    },
-    long_description_content_type = 'text/markdown',
+    install_requires  = ['PyQuery', 'Colorama', 'click']
 )
 
 

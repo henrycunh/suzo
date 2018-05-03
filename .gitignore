@@ -2,3 +2,4 @@ lab*
 dist
 SuZo.egg-info
 build
+.vscode
